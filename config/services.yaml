@@ -1,0 +1,28 @@
+# services.yaml
+parameters:
+            app.locales: [en,fr]     # Automatically injects dependencies in your services.
+
+    images_directory: '%kernel.project_dir%/public/uploads/covoiturages'
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    App\Form\DataTransformer\FileToStringTransformer:
+        arguments: []
+
+    Knp\Snappy\Pdf:
+        arguments:
+            - '"C:/Program Files/wkhtmltopdf/bin/wkhtmltopdf.exe"'
+
+    App\Controller\ConfirmCovoiturage\ConfirmCovoiturageController:
+        arguments:
+            $pdf: '@Knp\Snappy\Pdf'
+
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
